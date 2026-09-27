@@ -12,13 +12,13 @@
 library(tidyverse)
 library(testthat)
 
-data <- read_csv("data/02-analysis_data/analysis_data.csv")
+data <- read_csv("data/02-analysis_data/monthly_ferry_data.csv")
 
 
 #### Test data ####
-# Test that the dataset has 151 rows - there are 151 divisions in Australia
-test_that("dataset has 151 rows", {
-  expect_equal(nrow(analysis_data), 151)
+# Test that the dataset has 15 rows, as we are watching a 15 month period
+test_that("dataset has 15 rows", {
+  expect_equal(nrow(analysis_data), 15)
 })
 
 # Test that the dataset has 3 columns
@@ -26,19 +26,19 @@ test_that("dataset has 3 columns", {
   expect_equal(ncol(analysis_data), 3)
 })
 
-# Test that the 'division' column is character type
-test_that("'division' is character", {
-  expect_type(analysis_data$division, "character")
+# Test that the 'Date' column is character type
+test_that("'Date' is character", {
+  expect_type(analysis_data$Date, "character")
 })
 
-# Test that the 'party' column is character type
-test_that("'party' is character", {
-  expect_type(analysis_data$party, "character")
+# Test that the 'Redemption_Count' column is character type
+test_that("'Redemption_Count' is double", {
+  expect_type(analysis_data$Redemption_Count, "double")
 })
 
-# Test that the 'state' column is character type
-test_that("'state' is character", {
-  expect_type(analysis_data$state, "character")
+# Test that the 'Sales_Count' column is character type
+test_that("'Sales_Count' is double", {
+  expect_type(analysis_data$Sales_Count, "double")
 })
 
 # Test that there are no missing values in the dataset
@@ -46,24 +46,20 @@ test_that("no missing values in dataset", {
   expect_true(all(!is.na(analysis_data)))
 })
 
-# Test that 'division' contains unique values (no duplicates)
-test_that("'division' column contains unique values", {
-  expect_equal(length(unique(analysis_data$division)), 151)
+# Test that 'Date' contains unique dates (no duplicates)
+test_that("'Date' column contains unique dates", {
+  expect_equal(length(unique(analysis_data$Date)), 15)
 })
 
-# Test that 'state' contains only valid Australian state or territory names
-valid_states <- c("New South Wales", "Victoria", "Queensland", "South Australia", "Western Australia", 
-                  "Tasmania", "Northern Territory", "Australian Capital Territory")
-test_that("'state' contains valid Australian state names", {
-  expect_true(all(analysis_data$state %in% valid_states))
+# Test that 'Date' contains only valid Dates from our timeframe
+valid_dates <- c("2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12",
+  "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08")
+test_that("'Date' contains valid Year Month Combos", {
+  expect_true(all(analysis_data$Date %in% valid_dates))
 })
 
-# Test that there are no empty strings in 'division', 'party', or 'state' columns
-test_that("no empty strings in 'division', 'party', or 'state' columns", {
-  expect_false(any(analysis_data$division == "" | analysis_data$party == "" | analysis_data$state == ""))
+# Test that there are no empty strings in Date column
+test_that("no empty strings in 'Date' column", {
+  expect_false(any(analysis_data$Date == ""))
 })
 
-# Test that the 'party' column contains at least 2 unique values
-test_that("'party' column contains at least 2 unique values", {
-  expect_true(length(unique(analysis_data$party)) >= 2)
-})
