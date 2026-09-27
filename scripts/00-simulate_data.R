@@ -25,12 +25,11 @@ Date <- c(
 simulated_ferry_data <- tibble(
   Date = Date,
 
-  Sales_Count = rnbinom(n = length(Date), mu = 200000, size = 2),
-  
-  Redemption_Count = rnbinom(n = length(Date), mu = 220000, size = 2)
+  Redemption_Count = rnbinom(n = length(Date), mu = 200000, size = 2),
+  Sales_Count = rnbinom(n = length(Date), mu = 220000, size = 2)
 )
 
 #### Save Data ####
-write.csv(simulated_ferry_data, file = "data/00-simulated_data/simulated_monthly_ferry_data.csv")
+write.csv(simulated_ferry_data, file = "data/00-simulated_data/simulated_monthly_ferry_data.csv", row.names = FALSE)
 
 print(simulated_ferry_data)

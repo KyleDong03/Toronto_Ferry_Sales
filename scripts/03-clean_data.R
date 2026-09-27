@@ -9,36 +9,27 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(dplyr) 
+library(lubridate)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+# Load the data into a dataframe for cleaning 
+df <- read.csv("data/01-raw_data/Toronto_island_ferry_ticket_counts.csv") 
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
-  mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
+# Rename the count columns to have a consistent format 
+df <- df %>% rename(Redemption_Count = Redemption.Count, Sales_Count = Sales.Count) 
 
-#### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+# Convert the Timestamp column into a date-time data type 
+df$Timestamp <- ymd_hms(df$Timestamp)
+
+# Create a Date column to hold the Year and Month, which will later be used to sum the data 
+df <- df %>%
+  mutate(
+    Date = format(floor_date(Timestamp, unit = "month"), "%Y-%m")
+  )
+
+# Create a new dataframe to store the total redemptions and sales per month 
+monthly_totals <- df %>% group_by(Date) %>% summarise( Redemption_Count = sum(Redemption_Count, na.rm = TRUE), Sales_Count = sum(Sales_Count, na.rm = TRUE)) 
+
+# Export the monthly data to a CSV file
+write.csv(monthly_totals, "data/02-analysis_data/monthly_ferry_data.csv", row.names = FALSE)

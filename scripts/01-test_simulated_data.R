@@ -26,18 +26,18 @@ if (exists("analysis_data")) {
 
 #### Test data ####
 
-# Check if the dataset has 15 rows
+# Check if the dataset has 15 rows, one for each valid date
 if (nrow(analysis_data) == 15) {
   message("Test Passed: The dataset has 15 rows.")
 } else {
   stop("Test Failed: The dataset does not have 15 rows.")
 }
 
-# Check if the dataset has 4 columns, accounting for the id column automatically generated
-if (ncol(analysis_data) == 4) {
-  message("Test Passed: The dataset has 4 columns.")
+# Check if the dataset has 3 columns
+if (ncol(analysis_data) == 3) {
+  message("Test Passed: The dataset has 3 columns.")
 } else {
-  stop("Test Failed: The dataset does not have 4 columns.")
+  stop("Test Failed: The dataset does not have 3 columns.")
 }
 
 # Check if all values in the 'Date' column are unique
