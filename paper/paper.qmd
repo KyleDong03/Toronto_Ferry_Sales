@@ -36,7 +36,7 @@ Telegraphing paragraph: The remainder of this paper is structured as follows. @s
 
 ## Data source
 
-The Toronto Island ferry ticket sales and redemption data (2025-2026) [@dataset] was collected by the fleet services department of the city of Toronto, published through Toronto Open Data [@opentorontodata]. This dataset was chosen as the Toronto Islands are increasing in popularity. With this data being the most up to date on the ticket sales and redemptions, which are the main interest when observing the Toronto Islands demand, this dataset became the optimal choice. Currently, the 32,000 most recent entries of the 279,573 total data points, to give a more focused study into the monthly, and subsequently seasonal trends.
+The Toronto Island ferry ticket sales and redemption data (2025-2026) [@dataset] was collected by the fleet services department of the city of Toronto, published through Open Data Toronto [@opentorontodata]. This dataset was chosen as the Toronto Islands are increasing in popularity. With this data being the most up to date on the ticket sales and redemptions, which are the main interest when observing the Toronto Islands demand, this dataset became the optimal choice. Currently, the 32,000 most recent entries of the 279,573 total data points, to give a more focused study into the monthly, and subsequently seasonal trends.
 
 The statistical programming language R [@citeR] was used to simulate the data, retrieve and clean the actual data, as well as test both the simulated and actual data. Tidyverse [@tidyverse], specifically lubridate [@lubridate], dplyr [@dplyr], and testthat [@testthat] were used throughout the process, with lubridate being used in the data cleaning to work with the date formatted data, dplyr being used to manipulate the data in the retrieval and cleaning, and testthat being utilized to form unit tests for the actual data. Opendatatoronto [@opentorontodata] was used to retrieve the actual data, with a script that was also provided [@dataset]. Tinytable [@tinytable] and ggplot2 [@ggplot2] were used to create the tables and graphs in this report, with scales [@scales] being used to format the graphs.
 
@@ -78,7 +78,6 @@ The data was grouped by the month and year in which the record took place, and t
 #| label: tbl-total-data
 #| tbl-cap: "Toronto Island ferry ticket data totaled by month and year"
 #| tbl-pos: "H"
-#| out-width: "90%"
 
 library(tinytable)
 
@@ -105,7 +104,6 @@ tt(
 #| warning: false
 #| message: false
 #| fig-pos: "H"
-#| out-width: "90%"
 
 library(ggplot2)
 library(scales)
