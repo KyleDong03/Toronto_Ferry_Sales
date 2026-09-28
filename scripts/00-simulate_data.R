@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Simulates a dataset of Toronto island ferry ticket sales and redemptions
+# Purpose: Simulates a dataset of Toronto Island ferry ticket sales and redemptions
 # Spanning 15 months
 # Author: Kyle Dong
 # Date: 28 September 2026

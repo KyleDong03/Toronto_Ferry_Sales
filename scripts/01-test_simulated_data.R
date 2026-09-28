@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Tests the structure and validity of the simulated Toronto island ferry dataset.
+# Purpose: Tests the structure and validity of the simulated Toronto Island ferry dataset.
 # Author: Kyle Dong
 # Date: 28 September 2026
 # Contact: ky.dong@mail.utoronto.ca

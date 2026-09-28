@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Cleans the raw Toronto island ferry data by aggregating them to monthly totals
+# Purpose: Cleans the raw Toronto Island ferry data by aggregating them to monthly totals
 # Author: Kyle Dong
 # Date: 28 September 2026
 # Contact: ky.dong@mail.utoronto.ca
@@ -18,7 +18,7 @@ library(lubridate)
 
 #### Clean data ####
 # Load the data into a dataframe for cleaning 
-df <- read.csv("data/01-raw_data/Toronto_island_ferry_ticket_counts.csv") 
+df <- read.csv("data/01-raw_data/Toronto_Island_ferry_ticket_counts.csv") 
 
 # Rename the count columns to have a consistent format 
 df <- df %>% rename(Redemption_Count = Redemption.Count, Sales_Count = Sales.Count) 

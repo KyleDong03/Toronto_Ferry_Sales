@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Downloads and saves the Toronto island ferry ticket count
+# Purpose: Downloads and saves the Toronto Island ferry ticket count
 # Data from open data Toronto 
 # Author: Kyle Dong
 # Date: 28 September 2026
@@ -30,4 +30,4 @@ data <- filter(datastore_resources, row_number()==1) %>% get_resource()
 data
 
 # Write the loaded data to the raw data folder
-write.csv(data, file = "data/01-raw_data/Toronto_island_ferry_ticket_counts.csv")
+write.csv(data, file = "data/01-raw_data/Toronto_Island_ferry_ticket_counts.csv")

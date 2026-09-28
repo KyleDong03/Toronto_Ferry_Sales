@@ -1,13 +1,12 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Seasonal Surge and Off-Season Slump: Analyzing the Variance in Demand for the Toronto Island Ferry Over 2025-2026"
+subtitle: "Month by month comparison of the ticket sales and redemptions"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: [https://github.com/RohanAlexander/starter_folder](https://github.com/RohanAlexander/starter_folder)."
+  - Kyle Dong
+thanks: "Code and data are available at: [https://github.com/KyleDong03/Toronto_Ferry_Sales](https://github.com/KyleDong03/Toronto_Ferry_Sales)."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "By analyzing the ticket sales and redemptions for the Toronto Island ferry Provided by the city of Toronto, this study aims to indentify how demand for the ferry changes throughout the year in spite of outside factors. The analysis finds that the ferry is more popular during the summer months, with June of 2026 outperforming June of 2025. This allows for the ferry services to optimize their staffing and vehicle scheduling over the course of a year, and through year to year comparisons it can be determined how effective new events are on increasing the Island's popularity."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -19,21 +18,19 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(opendatatoronto)
 ```
 
 
 # Introduction
 
-Overview paragraph
+The Toronto Islands are the premier way to view the city's skyline. Thus it becomes a hub for travellers to visit, whether they are just visiting Toronto or are from the surrounding area. Understanding when these visits happen, and what can influence the demand allows for the City of Toronto, which operates the ferries, to best optimize their spending versus returns.
 
-Estimand paragraph
+The City of Toronto keeps records of how many ferry tickets are sold, and redeemed, in real time with servers being updated every 15 minutes. By taking these data points and aggregating them by what month and year the sales occured, it was seen that the ferry is popular during the months of July and August, with November, December, January, February, and March being the least popular. Also when camparing between June 2025 and 2026, it can be seen that there is a significant difference in ticket sales and redemptions, which may be due to the multitude of new events on the Toronto Islands. 
 
-Results paragraph
+This trend of having busy summers and off-peak winters can be crucial to the city as it allows them to have their infrastructure equiped for their peak seasons by taking advantage of the off-peak to reduce the operating budget and schedule maintenance while minimizing lost revenue. Understanding the correlation of new events and traffic to the Toronto Islands allows the City of Toronto to better decide what events to hold in the future and how they can optimize profits in such situations, allowing them to reinvest more into their infrastructure and personnel. 
 
-Why it matters paragraph
-
-Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data....
+Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data provides a description of the data used in the analysis, @sec-results gives a detailed account of when the tickets are sold and redeemed, and @sec-sec-disc summarizes and discusses the results.
 
 
 
@@ -103,43 +100,7 @@ Add graphs, tables and text.
 
 Use sub-sub-headings for each outcome variable and feel free to combine a few into one if they go together naturally.
 
-
-
-
-
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
+# Results {#sec-results}
 
 Our results are summarized in @tbl-modelresults.
 
@@ -174,7 +135,7 @@ modelsummary::modelsummary(
 
 
 
-# Discussion
+# Discussion {#sec-disc}
 
 ## First discussion point {#sec-first-point}
 

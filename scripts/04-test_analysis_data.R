@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Tests the aggregated actual Toronto island ferry ticket count data
+# Purpose: Tests the aggregated actual Toronto Island ferry ticket count data
 # For correct structure and validity 
 # Author: Kyle Dong
 # Date: 28 September 2026
