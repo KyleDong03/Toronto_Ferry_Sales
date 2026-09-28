@@ -24,25 +24,25 @@ library(opendatatoronto)
 
 # Introduction
 
-The Toronto Islands are the premier way to view the city's skyline. Thus, they become a hub for travelers to visit, whether they are just visiting Toronto or are from the surrounding area. Understanding when these visits happen, and what can influence the demand allows for the City of Toronto, which operates the ferries, to best optimize their spending versus returns.
+The Toronto Islands are the premier way to view the city's skyline. They become a hub for travelers to visit, whether they are just visiting Toronto or are from the surrounding area. Understanding when these visits happen, and what can influence the demand, allows for the City of Toronto, which operates the ferries, to best optimize their spending versus returns.
 
-The City of Toronto keeps records of how many ferry tickets are sold, and redeemed, in real time with servers being updated every 15 minutes. By taking these data points and aggregating them by what month and year the sales occured, it was seen that the ferry is popular during the months of July and August, with November, December, January, February, and March being the least popular.
+The City of Toronto keeps records of how many ferry tickets are sold, and redeemed, in real time with servers being updated every 15 minutes. By taking these data points and aggregating them by what month and year the sales occurred it was seen that the ferry is popular during the months of July and August, with November, December, January, February, and March being the least popular.
 
-This trend of having busy summers and off-peak winters can be useful to the city as it allows their infrastructure to be equipped for their peak seasons by taking advantage of the off-peak to reduce the operating budget and schedule maintenance while minimizing lost revenue. Understanding the traffic patterns allows the City of Toronto to better decide how they can optimize their operations to save on costs, allowing them to reinvest more into their infrastructure and personnel. 
+This trend of having busy summers and off-peak winters can be useful to the city as it allows their infrastructure to be equipped for their peak seasons by taking advantage of the off-peak to reduce the operating budget and schedule maintenance while minimizing lost revenue. Understanding the traffic patterns allows the City of Toronto to better decide how they can optimize their operations to save on costs. This allows for more reinvestment into the staff and infrastructure.
 
-Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data provides a description of the data used in the analysis.
+The remainder of this paper is structured as follows. @sec-data provides a description of the data used in the analysis.
 
 # Data {#sec-data}
 
 ## Data source
 
-The Toronto Island ferry ticket sales and redemption data (2025-2026) [@dataset] was collected by the fleet services department of the city of Toronto, published through Open Data Toronto [@opentorontodata]. This dataset was chosen as the Toronto Islands are increasing in popularity. With this data being the most up to date on the ticket sales and redemptions, which are the main interest when observing the Toronto Islands demand, this dataset became the optimal choice. Currently, the 32,000 most recent entries of the 279,573 total data points, to give a more focused study into the monthly, and subsequently seasonal trends.
+The Toronto Island ferry ticket sales and redemption data (2025-2026) [@dataset] was collected by the fleet services department of the city of Toronto, published through Open Data Toronto [@opentorontodata]. This dataset was chosen as the Toronto Islands are increasing in popularity, due to many factors including the temporary break in ferry fares for younger and older residents [@citynews]. With this data being the most up to date on the ticket sales and redemptions, which are the main interest when observing the Toronto Islands demand, this dataset became the optimal choice. Currently, the 32,000 most recent entries of the 279,573 total data points were chosen to be analyzed, to give a more focused study into the monthly, and subsequently seasonal trends.
 
 The statistical programming language R [@citeR] was used to simulate the data, retrieve and clean the actual data, as well as test both the simulated and actual data. Tidyverse [@tidyverse], specifically lubridate [@lubridate], dplyr [@dplyr], and testthat [@testthat] were used throughout the process, with lubridate being used in the data cleaning to work with the date formatted data, dplyr being used to manipulate the data in the retrieval and cleaning, and testthat being utilized to form unit tests for the actual data. Opendatatoronto [@opentorontodata] was used to retrieve the actual data, with a script that was also provided [@dataset]. Tinytable [@tinytable] and ggplot2 [@ggplot2] were used to create the tables and graphs in this report, with scales [@scales] being used to format the graphs.
 
 ## Measurement
 	
-The 3 variables that were used in this analysis were the date, ticket sales, and ticket redemptions. @tbl-raw-data gives a glimpse into the data where every 15 minutes all the ticket information collected would be polled together, as seen in the Timestamp column which records the date and time of interest, and recorded on the system as totals. The tickets sold would be tracked by the online services or the ticket kiosks, and the tickets redeemed would be scanned when the ticket was scanned to be redeemed on site, where the totals would be recorded into the Redemption.Count and Sales.Count columns respectively.
+The 3 variables that were used in this analysis were the date, ticket sales, and ticket redemptions. @tbl-raw-data gives a glimpse into the data where every 15 minutes the ticket information collected would be polled together, as seen in the Timestamp column which records the date and time of interest, and keeps count of the sales and redemptions as totals. The tickets sold would be tracked by the online sales service or the ticket kiosks, and the tickets redeemed are a direct count of the number of tickets scanned and used for the ferry rides at that time. These totals would be recorded into the Redemption.Count and Sales.Count columns respectively.
 
 ```{r}
 #| eval: true
@@ -68,7 +68,7 @@ tt(
   
 ```
 
-The data was grouped by the month and year in which the record took place, and the ticket sales and redemptions were totalled to give the totals for the months between June 2025 and August 2026, thus giving 15 months to analyze, which can be seen in @tbl-total-data and the respective columns. Thus the 3 variables, Data, Redemption_Count, and Sales_Count were constructed. Note that because the data chosen was between June 20, 2025 and August 22, 2026 each boundary month has partial month figures.
+The data was grouped by the month and year in which the record took place, and the ticket sales and redemptions were totaled to give overall information for the months between June 2025 and August 2026, thus giving 15 months to analyze, which can be seen in @tbl-total-data and the respective columns. Thus the 3 variables, Data, Redemption Count, and Sales Count were constructed. Note that because the data chosen was between June 20, 2025 and August 22, 2026 each boundary month has partial month figures.
 
 ```{r}
 #| eval: true
@@ -86,7 +86,7 @@ df <- read.csv(here::here("data/02-analysis_data/monthly_ferry_data.csv"))
 colnames(df) <- c("Date", "Redemption Count", "Sales Count")
 
 tt(
-  head(df[, c("Date","Redemption Count","Sales Count")], 5)
+  head(df[, c("Date","Redemption Count","Sales Count")], 15)
 )|>
   format_tt(
     j = c("Redemption Count", "Sales Count"),
