@@ -1,11 +1,15 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the raw Toronto island ferry data by aggregating them to monthly totals
+# Author: Kyle Dong
+# Date: 28 September 2026
+# Contact: ky.dong@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites:
+  # - The `tidyverse` package must be installed and loaded
+  # - The `dplyr` package must be installed and loaded  
+  # - The `lubridate` package must be installed and loaded
+  # - 02-download_data.R must have been run
+# Any other information needed? N/A
 
 #### Workspace setup ####
 library(tidyverse)

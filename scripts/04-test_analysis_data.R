@@ -1,11 +1,14 @@
 #### Preamble ####
-# Purpose: Tests... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 26 September 2024 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Tests the aggregated actual Toronto island ferry ticket count data
+# For correct structure and validity 
+# Author: Kyle Dong
+# Date: 28 September 2026
+# Contact: ky.dong@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: 
+  # - The `tidyverse` package must be installed and loaded
+  # - The `testthat` package must be installed and loaded  
+# Any other information needed? N/A
 
 
 #### Workspace setup ####

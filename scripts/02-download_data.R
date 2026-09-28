@@ -1,11 +1,14 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
+# Purpose: Downloads and saves the Toronto island ferry ticket count
+# Data from open data Toronto 
 # Author: Kyle Dong
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Date: 28 September 2026
+# Contact: ky.dong@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: 
+  # - The `opendatatoronto` package must be installed and loaded
+  # - The `dplyr` package must be installed and loaded  
+# Any other information needed? N/A
 
 
 #### Workspace setup ####get package
