@@ -1,12 +1,12 @@
 ---
 title: "Seasonal Surge and Off-Season Slump: Analyzing the Variance in Demand for the Toronto Island Ferry Over 2025-2026"
-subtitle: "Month by month comparison of the ticket sales and redemptions"
+subtitle: "Month by month comparison of the ticket sales and redemptions for the Toronto Island ferry"
 author: 
   - Kyle Dong
 thanks: "Code and data are available at: [https://github.com/KyleDong03/Toronto_Ferry_Sales](https://github.com/KyleDong03/Toronto_Ferry_Sales)."
 date: today
 date-format: long
-abstract: "By analyzing the ticket sales and redemptions for the Toronto Island ferry Provided by the city of Toronto, this study aims to indentify how demand for the ferry changes throughout the year in spite of outside factors. The analysis finds that the ferry is more popular during the summer months, with June of 2026 outperforming June of 2025. This allows for the ferry services to optimize their staffing and vehicle scheduling over the course of a year, and through year to year comparisons it can be determined how effective new events are on increasing the Island's popularity."
+abstract: "By analyzing the ticket sales and redemptions for the Toronto Island ferry provided by the City of Toronto, this study aims to identify how demand for the ferry changes throughout the year. The analysis finds that the ferry is far more popular during the summer months, demonstrating that there are peak months where sales are significantly higher than the baseline. This allows for the ferry services to optimize their staffing and vehicle scheduling over the course of a year."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -24,196 +24,150 @@ library(opendatatoronto)
 
 # Introduction
 
-The Toronto Islands are the premier way to view the city's skyline. Thus it becomes a hub for travellers to visit, whether they are just visiting Toronto or are from the surrounding area. Understanding when these visits happen, and what can influence the demand allows for the City of Toronto, which operates the ferries, to best optimize their spending versus returns.
+The Toronto Islands are the premier way to view the city's skyline. Thus, they become a hub for travelers to visit, whether they are just visiting Toronto or are from the surrounding area. Understanding when these visits happen, and what can influence the demand allows for the City of Toronto, which operates the ferries, to best optimize their spending versus returns.
 
-The City of Toronto keeps records of how many ferry tickets are sold, and redeemed, in real time with servers being updated every 15 minutes. By taking these data points and aggregating them by what month and year the sales occured, it was seen that the ferry is popular during the months of July and August, with November, December, January, February, and March being the least popular. Also when camparing between June 2025 and 2026, it can be seen that there is a significant difference in ticket sales and redemptions, which may be due to the multitude of new events on the Toronto Islands. 
+The City of Toronto keeps records of how many ferry tickets are sold, and redeemed, in real time with servers being updated every 15 minutes. By taking these data points and aggregating them by what month and year the sales occured, it was seen that the ferry is popular during the months of July and August, with November, December, January, February, and March being the least popular.
 
-This trend of having busy summers and off-peak winters can be crucial to the city as it allows them to have their infrastructure equiped for their peak seasons by taking advantage of the off-peak to reduce the operating budget and schedule maintenance while minimizing lost revenue. Understanding the correlation of new events and traffic to the Toronto Islands allows the City of Toronto to better decide what events to hold in the future and how they can optimize profits in such situations, allowing them to reinvest more into their infrastructure and personnel. 
+This trend of having busy summers and off-peak winters can be useful to the city as it allows their infrastructure to be equipped for their peak seasons by taking advantage of the off-peak to reduce the operating budget and schedule maintenance while minimizing lost revenue. Understanding the traffic patterns allows the City of Toronto to better decide how they can optimize their operations to save on costs, allowing them to reinvest more into their infrastructure and personnel. 
 
-Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data provides a description of the data used in the analysis, @sec-results gives a detailed account of when the tickets are sold and redeemed, and @sec-sec-disc summarizes and discusses the results.
-
-
-
-
-
+Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data provides a description of the data used in the analysis.
 
 # Data {#sec-data}
 
-## Overview
+## Data source
 
-We use the statistical programming language R [@citeR].... Our data [@shelter].... Following @tellingstories, we consider...
+The Toronto Island ferry ticket sales and redemption data (2025-2026) [@dataset] was collected by the fleet services department of the city of Toronto, published through Toronto Open Data [@opentorontodata]. This dataset was chosen as the Toronto Islands are increasing in popularity. With this data being the most up to date on the ticket sales and redemptions, which are the main interest when observing the Toronto Islands demand, this dataset became the optimal choice. Currently, the 32,000 most recent entries of the 279,573 total data points, to give a more focused study into the monthly, and subsequently seasonal trends.
 
-Overview text
+The statistical programming language R [@citeR] was used to simulate the data, retrieve and clean the actual data, as well as test both the simulated and actual data. Tidyverse [@tidyverse], specifically lubridate [@lubridate], dplyr [@dplyr], and testthat [@testthat] were used throughout the process, with lubridate being used in the data cleaning to work with the date formatted data, dplyr being used to manipulate the data in the retrieval and cleaning, and testthat being utilized to form unit tests for the actual data. Opendatatoronto [@opentorontodata] was used to retrieve the actual data, with a script that was also provided [@dataset]. Tinytable [@tinytable] and ggplot2 [@ggplot2] were used to create the tables and graphs in this report, with scales [@scales] being used to format the graphs.
 
 ## Measurement
 	
-Some paragraphs about how we go from a phenomena in the world to an entry in the dataset.
-
-## Outcome variables
-
-Add graphs, tables and text. Use sub-sub-headings for each outcome variable or update the subheading to be singular.
-
-
-
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+The 3 variables that were used in this analysis were the date, ticket sales, and ticket redemptions. @tbl-raw-data gives a glimpse into the data where every 15 minutes all the ticket information collected would be polled together, as seen in the Timestamp column which records the date and time of interest, and recorded on the system as totals. The tickets sold would be tracked by the online services or the ticket kiosks, and the tickets redeemed would be scanned when the ticket was scanned to be redeemed on site, where the totals would be recorded into the Redemption.Count and Sales.Count columns respectively.
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
+#| eval: true
 #| echo: false
+#| message: false
+#| warning: false
+#| label: tbl-raw-data
+#| tbl-cap: "Toronto Island ferry ticket original data as retrieved from Open Data Toronto"
+#| tbl-pos: "H"
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+library(tinytable)
+
+df <- read.csv(here::here("data/01-raw_data/Toronto_Island_ferry_ticket_counts.csv"))
+
+tt(
+  head(df[, c("Timestamp","Redemption.Count","Sales.Count")], 5)
+)|>
+  format_tt(
+    j = c("Redemption.Count", "Sales.Count"),
+    digits = 0,
+    num_mark_big = ","
+  )
+  
 ```
 
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+The data was grouped by the month and year in which the record took place, and the ticket sales and redemptions were totalled to give the totals for the months between June 2025 and August 2026, thus giving 15 months to analyze, which can be seen in @tbl-total-data and the respective columns. Thus the 3 variables, Data, Redemption_Count, and Sales_Count were constructed. Note that because the data chosen was between June 20, 2025 and August 22, 2026 each boundary month has partial month figures.
 
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| label: tbl-total-data
+#| tbl-cap: "Toronto Island ferry ticket data totaled by month and year"
+#| tbl-pos: "H"
+#| out-width: "90%"
+
+library(tinytable)
+
+df <- read.csv(here::here("data/02-analysis_data/monthly_ferry_data.csv"))
+
+colnames(df) <- c("Date", "Redemption Count", "Sales Count")
+
+tt(
+  head(df[, c("Date","Redemption Count","Sales Count")], 5)
+)|>
+  format_tt(
+    j = c("Redemption Count", "Sales Count"),
+    digits = 0,
+    num_mark_big = ","
+  )
+```
+
+## Ticket Data
+
+```{r}
+#| label: fig-ticket_sales
+#| fig-cap: "Total tickets sold during each month from June 2025 to August 2026"
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-pos: "H"
+#| out-width: "90%"
 
-analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
+library(ggplot2)
+library(scales)
 
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+df <- read.csv(here::here("data/02-analysis_data/monthly_ferry_data.csv"))
+
+df$Date <- as.Date(paste0(df$Date, "-01"))
+
+ggplot(df, aes(x = Date, y = Sales_Count)) + 
+  geom_col(fill = "darkblue") +
+  geom_point() +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  scale_y_continuous(labels = scales::label_comma(), n.breaks = 8) +
+  labs(
+    x = "Date",
+    y = "Tickets Sold"
+  ) +
+  theme_minimal()+
+  theme(
+    panel.grid.minor = element_blank(),        # Removes all minor gridlines
+    panel.grid.major.x = element_blank(),      # Removes major vertical gridlines
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
 ```
 
-Talk way more about it. 
-
-## Predictor variables
-
-Add graphs, tables and text.
-
-Use sub-sub-headings for each outcome variable and feel free to combine a few into one if they go together naturally.
-
-# Results {#sec-results}
-
-Our results are summarized in @tbl-modelresults.
+@fig-ticket_sales shows the amount of tickets sold every month through the specified dates giving an idea of what the seasonal trends are. It can be seen that the months of July and August are far higher than any other months, having a peak of 385,275 tickets sold in August 2025, with the least popular months being December and January, having a minimum of 14,572 tickets sold in January 2026.
 
 ```{r}
+#| label: fig-ticket_redemptions
+#| fig-cap: "Total tickets redeemed during each month from June 2025 to August 2026"
 #| echo: false
-#| eval: true
 #| warning: false
 #| message: false
+#| fig-pos: "H"
 
-library(rstanarm)
+library(ggplot2)
+library(scales)
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+df <- read.csv(here::here("data/02-analysis_data/monthly_ferry_data.csv"))
+
+df$Date <- as.Date(paste0(df$Date, "-01"))
+
+ggplot(df, aes(x = Date, y = Redemption_Count)) + 
+  geom_col(fill = "darkblue") +
+  geom_point() +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  scale_y_continuous(labels = scales::label_comma(), n.breaks = 8) +
+  labs(
+    x = "Date",
+    y = "Tickets Redeemed"
+  ) +
+  theme_minimal()+
+  theme(
+    panel.grid.minor = element_blank(),        # Removes all minor gridlines
+    panel.grid.major.x = element_blank(),      # Removes major vertical gridlines
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) 
 ```
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
-
-
-
-
-# Discussion {#sec-disc}
-
-## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
-
-Please don't use these as sub-heading labels - change them to be what your point actually is.
-
-## Third discussion point
-
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
+@fig-ticket_redemptions shows the amount of tickets redeemed every month through the specified dates giving an idea of what the seasonal trends are. It can be seen that the months of July and August are far higher than any other months, having a peak of 380,782 tickets sold in August 2025, with the least popular months being December and January, having a minimum of 17,745 tickets sold in January 2026. These trends and specific peaks match with the same months as the ticket sales, which makes sense as both are directly linked to each other, as tickets sold must be redeemed, and redeemed tickets must have been sold at some point.
 
 \newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
-
-
-\newpage
-
 
 # References
 
